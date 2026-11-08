@@ -63,17 +63,17 @@ Para ter mais administradores, repita os passos 1 a 3.
 
 ### 4. Ligar o site ao Supabase
 
-1. Em **Project Settings → API** (ou **Data API / API Keys**), copie:
-   - **Project URL** (ex.: `https://abcdxyz.supabase.co`)
-   - a chave **anon public** (ou **publishable**)
+1. Copie:
+   - **Project URL**, em **Project Settings → Data API** (ex.: `https://abcdxyz.supabase.co`)
+   - a **Publishable key**, em **Project Settings → API Keys** (começa com `sb_publishable_`)
 2. Abra `js/config.js` e cole os dois valores:
 
    ```js
    export const SUPABASE_URL = 'https://abcdxyz.supabase.co';
-   export const SUPABASE_ANON_KEY = 'eyJhbGciOi...';
+   export const SUPABASE_KEY = 'sb_publishable_...';
    ```
 
-> A chave anon é pública por natureza, pode ficar no código. **Nunca** coloque a chave `service_role` / `secret` aqui.
+> A publishable key é pública por natureza, pode ficar no código. **Nunca** coloque a **secret key** (`sb_secret_...`) aqui. Não use as chaves *legacy* (anon/service_role): elas serão desativadas em 2027.
 
 ### 5. Testar no computador
 

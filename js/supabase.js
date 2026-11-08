@@ -1,9 +1,9 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/+esm';
+import { SUPABASE_URL, SUPABASE_KEY } from './config.js';
 
 export const configurado = !SUPABASE_URL.includes('SEU-PROJETO');
 
-export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Retorna true se há alguém logado e esse alguém está na tabela admins.
 let cacheAdmin = null;
