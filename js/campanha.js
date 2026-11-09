@@ -110,7 +110,7 @@ export async function telaCampanha(slug, mesId) {
           aberto ? el('button', { class: 'btn', onclick: () => abrirEnvio(pag, pessoas.get(pag.pessoa_id), recarregar) }, 'Informar pagamento') : null,
           admin ? marcarPago() : null);
       } else if (pag.status === 'enviado') {
-        acoes = el('div', { class: 'person-actions small muted' }, 'Comprovante enviado. Aguardando validação do administrador.');
+        acoes = el('div', { class: 'person-actions small muted' }, 'Comprovante enviado. Aguardando conferência do chefe Renatinho. 😸');
       } else if (pag.status === 'validado') {
         acoes = el('div', { class: 'person-actions' },
           el('span', { class: 'small muted' }, admin ? 'Pago, sem comprovante anexado.' : 'Pagamento validado. Obrigado! 💛'),
