@@ -109,7 +109,8 @@ Também funciona no Netlify ou na Vercel: importe o repositório, sem comando de
 3. **Abrir mês:** escolha mês e ano. A lista do mês é criada com todas as pessoas ativas.
 4. **Editar lista:** inclua ou remova pessoas só daquele mês.
 5. **Encerrar:** o mês some da página pública. Ele continua visível no painel (botão **Ver**) e pode ser reaberto.
-6. **Validar:** na página da campanha, toque num nome com 📄 para ver o comprovante e escolher **Validar** ou **Recusar**. Depois de validado, aparece **Excluir comprovante**.
+6. **Validar:** na página da campanha, toque num nome com 📄 para ver o comprovante e escolher **Validar** ou **Recusar**. Depois de validado, aparecem **Cancelar validação** (volta para amarelo) e **Excluir comprovante**.
+7. **Pago sem comprovante:** toque num nome pendente e use **Marcar como pago** (só aparece para administradores). Para voltar atrás, toque no nome de novo e use **Desfazer pagamento**.
 
 ### Quem contribui
 
@@ -129,6 +130,5 @@ Se houver uma única campanha, a página inicial já abre direto nela.
 ## Próximas ideias (v1)
 
 - Valor da contribuição e total arrecadado por mês
-- Marcar como pago sem comprovante (pagamento em dinheiro)
 - Histórico por pessoa
 - Notificação ao administrador quando chegar comprovante

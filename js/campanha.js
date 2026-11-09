@@ -78,15 +78,43 @@ export async function telaCampanha(slug, mesId) {
       desenhar();
     };
 
+    // Ações exclusivas do administrador
+    const marcarPago = () => el('button', {
+      class: 'btn success',
+      onclick: (ev) => ocupado(ev.currentTarget, async () => {
+        try {
+          await atualizarPagamento(pag.id, { status: 'validado', validado_em: new Date().toISOString() });
+          toast('Marcado como pago ✅');
+          selecionado = null;
+          await recarregar();
+        } catch (e) { erro(e); }
+      }),
+    }, 'Marcar como pago');
+
+    const desfazerPago = () => el('button', {
+      class: 'btn secondary',
+      onclick: (ev) => ocupado(ev.currentTarget, async () => {
+        if (!confirm('Desfazer o pagamento? O nome volta a ficar pendente.')) return;
+        try {
+          await atualizarPagamento(pag.id, { status: 'pendente', validado_em: null });
+          toast('Pagamento desfeito');
+          await recarregar();
+        } catch (e) { erro(e); }
+      }),
+    }, 'Desfazer pagamento');
+
     let acoes = null;
     if (sel) {
-      if (pag.status === 'pendente' && aberto) {
+      if (pag.status === 'pendente' && (aberto || admin)) {
         acoes = el('div', { class: 'person-actions' },
-          el('button', { class: 'btn', onclick: () => abrirEnvio(pag, pessoas.get(pag.pessoa_id), recarregar) }, 'Informar pagamento'));
+          aberto ? el('button', { class: 'btn', onclick: () => abrirEnvio(pag, pessoas.get(pag.pessoa_id), recarregar) }, 'Informar pagamento') : null,
+          admin ? marcarPago() : null);
       } else if (pag.status === 'enviado') {
         acoes = el('div', { class: 'person-actions small muted' }, 'Comprovante enviado. Aguardando validação do administrador.');
       } else if (pag.status === 'validado') {
-        acoes = el('div', { class: 'person-actions small muted' }, 'Pagamento validado. Obrigado! 💛');
+        acoes = el('div', { class: 'person-actions' },
+          el('span', { class: 'small muted' }, admin ? 'Pago, sem comprovante anexado.' : 'Pagamento validado. Obrigado! 💛'),
+          admin ? desfazerPago() : null);
       } else {
         acoes = el('div', { class: 'person-actions small muted' }, 'Este mês está encerrado.');
       }
@@ -118,7 +146,7 @@ export async function telaCampanha(slug, mesId) {
         ? el('ul', { class: 'people' }, lista.map((p) => linhaPessoa(p, mes)))
         : el('p', { class: 'muted' }, 'Nenhuma pessoa neste mês.'),
       el('p', { class: 'small muted', style: 'margin:12px 0 0' },
-        admin ? 'Toque em um nome com 📄 para ver o comprovante.' : 'Toque no seu nome para informar o pagamento.'));
+        admin ? 'Toque em um nome para ver o comprovante ou marcar como pago.' : 'Toque no seu nome para informar o pagamento.'));
   }
 
   function desenhar() {
@@ -240,6 +268,13 @@ async function abrirRevisao(pag, depois) {
     );
   } else if (pag.status === 'validado') {
     rodape.append(el('button', {
+      class: 'btn secondary',
+      onclick: acao(async () => {
+        if (!confirm('Cancelar a validação? O comprovante volta para "aguardando validação".')) return false;
+        await atualizarPagamento(pag.id, { status: 'enviado', validado_em: null });
+      }, 'Validação cancelada'),
+    }, 'Cancelar validação'));
+    rodape.append(el('button', {
       class: 'btn danger',
       onclick: acao(async () => {
         if (!confirm('Excluir o arquivo do comprovante? O pagamento continua como validado.')) return false;
@@ -249,4 +284,9 @@ async function abrirRevisao(pag, depois) {
       }, 'Comprovante excluído'),
     }, 'Excluir comprovante'));
   }
+}
+
+async function atualizarPagamento(id, dados) {
+  const { error } = await sb.from('pagamentos').update(dados).eq('id', id);
+  if (error) throw error;
 }
