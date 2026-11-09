@@ -113,7 +113,7 @@ export async function telaCampanha(slug, mesId) {
         acoes = el('div', { class: 'person-actions small muted' }, 'Comprovante enviado. Aguardando conferência do chefe Renatinho. 😸');
       } else if (pag.status === 'validado') {
         acoes = el('div', { class: 'person-actions' },
-          el('span', { class: 'small muted' }, admin ? 'Pago, sem comprovante anexado.' : 'Pagamento validado. Obrigado! 💛'),
+          el('span', { class: 'small muted' }, admin ? 'Pago, sem comprovante anexado.' : 'Pagamento conferido pelo Renatinho. Obrigado! 💛'),
           admin ? desfazerPago() : null);
       } else {
         acoes = el('div', { class: 'person-actions small muted' }, 'Este mês está encerrado.');
@@ -141,7 +141,7 @@ export async function telaCampanha(slug, mesId) {
         el('span', { class: `badge${mes.status === 'encerrado' ? ' closed' : ''}` },
           mes.status === 'aberto' ? 'Em aberto' : 'Encerrado')),
       el('p', { class: 'summary' },
-        `${pagos} de ${lista.length} pagos`, enviados ? ` · ${enviados} aguardando validação` : ''),
+        `${pagos} de ${lista.length} pagos`, enviados ? ` · ${enviados} aguardando conferência do chefe Renatinho` : ''),
       lista.length
         ? el('ul', { class: 'people' }, lista.map((p) => linhaPessoa(p, mes)))
         : el('p', { class: 'muted' }, 'Nenhuma pessoa neste mês.'),
